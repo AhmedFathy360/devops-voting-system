@@ -22,21 +22,21 @@ jobs:
       - name: Build & Push vote-app
         uses: docker/build-push-action@v5
         with:
-          context: ../vote-app
+          context: ./vote-app
           push: true
           tags: perdita997/vote-app:latest
 
       - name: Build & Push worker
         uses: docker/build-push-action@v5
         with:
-          context: ../worker
+          context: ./worker
           push: true
           tags: perdita997/worker:latest
 
       - name: Build & Push result-app
         uses: docker/build-push-action@v5
         with:
-          context: ../result-app
+          context: ./result-app
           push: true
           tags: perdita997/result-app:latest
 

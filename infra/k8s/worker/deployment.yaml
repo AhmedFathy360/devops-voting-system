@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vote-worker
+  namespace: voting
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote-worker
+  template:
+    metadata:
+      labels:
+        app: vote-worker
+    spec:
+      containers:
+      - name: vote-worker
+        image: perdita997/worker:latest
+        imagePullPolicy: Always
+        env:
+        - name: REDIS_HOST
+          value: redis
+        - name: POSTGRES_HOST
+          value: postgres
+        - name: POSTGRES_DB
+          value: votedb
+        - name: POSTGRES_USER
+          value: uservote
+        - name: POSTGRES_PASSWORD
+          value: userpass
+

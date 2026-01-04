@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Live Results</title>
+    <style>
+        body { font-family: Arial; text-align: center; padding: 50px; }
+        .results { display: flex; justify-content: center; gap: 50px; margin-top: 30px; }
+        .vote-box { padding: 20px; border-radius: 10px; color: white; }
+        #cat { background-color: #ff6b6b; }
+        #dog { background-color: #4ecdc4; }
+        .count { font-size: 48px; font-weight: bold; }
+    </style>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Live Voting Results</h1>
+    <div class="results">
+        <div id="cat" class="vote-box">
+            <h2>🐱 Cats</h2>
+            <div id="cat-count" class="count">0</div>
+        </div>
+        <div id="dog" class="vote-box">
+            <h2>🐶 Dogs</h2>
+            <div id="dog-count" class="count">0</div>
+        </div>
+    </div>
+    <p><a href="http://192.168.56.10:5000/">Go Vote!</a></p>
+    
+    <script>
+        const socket = io();
+        
+        socket.on('results', (data) => {
+            const catCount = data.find(d => d.vote === 'cat')?.count || 0;
+            const dogCount = data.find(d => d.vote === 'dog')?.count || 0;
+            
+            document.getElementById('cat-count').textContent = catCount;
+            document.getElementById('dog-count').textContent = dogCount;
+        });
+    </script>
+</body>
+</html>

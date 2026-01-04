@@ -39,4 +39,24 @@ jobs:
           context: ./result-app
           push: true
           tags: perdita997/result-app:latest
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure kubectl
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+
+      - name: Verify cluster access
+        run: kubectl get nodes
+
+      - name: Deploy manifests
+        run: |
+          kubectl apply -f infra/k8s/namespace.yaml
+          kubectl apply -n voting -f infra/k8s/
 
